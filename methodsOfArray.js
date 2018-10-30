@@ -7,7 +7,6 @@ Array.prototype.myMap = function(callback, arg) {
 	return returnArray
 }
 
-// filter, some, forEach
 
 Array.prototype.myReduce = function(callback, initValue) {
 	
@@ -53,7 +52,7 @@ Array.prototype.myFilter = function( callback, arg ) {
 
   for (let i = 0; i < arr.length; i++ ) {
     if (arr[i] === undefined ) continue
-    if ( !!callback( arr[i], i, arr) ) returnArray.push(arr[i])     
+    if ( !!callback( arr[i], i, arr) ) returnArray.push( arr[i] )     
   }
   
   return returnArray
