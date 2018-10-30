@@ -57,3 +57,27 @@ Array.prototype.myFilter = function( callback, arg ) {
   
   return returnArray
 }
+
+Array.prototype.myFlat = function( ) {
+  const returnArray = []
+  for (let i = 0; i < this.length; i++) {
+
+    if (this[i] === undefined) continue
+
+    if ( !Array.isArray( this[i] ) ) returnArray.push(this[i])
+
+    if ( Array.isArray( this[i] ) ) {
+
+      for (let j = 0; j < this[i].length; j++) {
+        if (this[i][j] === undefined) continue
+        returnArray.push( this[i][j] )
+      }
+
+    }
+
+  }
+  
+  return returnArray
+}
+
+console.log( [1,2,[3,4]].myFlat() )
