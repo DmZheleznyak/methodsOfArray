@@ -1,46 +1,60 @@
-Array.prototype.myMap = function(callback, thisArg) {
-// T (thisArg), A ()    
-	var thisArgument;
-
-	if (this == null) {
-		throw new TypeError(' this is null or not defined');
+Array.prototype.myMap = function(callback, arg) {
+	const returnArray = []
+	const arr = arg || this
+	for (let i = 0; i < arr.length; i++ ) {
+		returnArray.push( callback(arr[i], i, arr ) )
 	}
+	return returnArray
+}
 
-	var O = Object(this); // Object ведёт себя идентично коду new Object()
-// Object создаёт объект-обёртку для переданного значения
-	console.log(`O.length`, O.length )
-	var lengthOurArray = O.length >>> 0;  // Логический сдвиг вправо ??? 
-// Сдвигает двоичное представление числа a на b разрядов вправо. Освобождающиеся разряды заполняются нулями.    
+// filter, some, forEach
+
+Array.prototype.myReduce = function(callback, initValue) {
 	
-	if (typeof callback !== 'function') {
-		throw new TypeError(callback + ' is not a function');
+	var resultCallback = this[0]
+ 
+	if (initValue !== undefined) {
+		resultCallback = callback(initValue, this[0], 0, this)
 	}
-
-	if (arguments.length > 1) {
-		thisArgument = thisArg;
-	}
-
-	var newArray = new Array(lengthOurArray); // создаём массив с той же длинной , что обрабатываемый массив
-
-	var k = 0; // переменная счётчик и индекс элемента
-
-	while ( k < lengthOurArray ) {
-
-		var kValue, mappedValue;
-		
-		if (k in O) {
-			kValue = O[k];
-			mappedValue = callback.call(thisArgument, kValue, k, O);
-			newArray[k] = mappedValue;
-		}
-		k++;
-	}
-
-	return newArray;
-};
-
 	
-	const r = [1,2,3].myMap( a => a + a )
-	const v = [ 10, 20, 30].myMap( a => a * a )
+	for ( let i = 1; i < this.length; i++) {
+		resultCallback = callback(resultCallback, this[i], i, this)
+	}
 
-	console.log( r, v )
+	return resultCallback
+}
+
+Array.prototype.myforEach = function( callback, arg ) {
+
+  const arr = arg || this
+
+  for (let i = 0; i < arr.length; i++ ) {
+		if (arr[i] === undefined ) continue	
+  	callback( arr[i], i, arr)
+  }
+// always return undefined
+}
+
+Array.prototype.mySome = function( callback, arg ) {
+
+  const arr = arg || this
+
+  for (let i = 0; i < arr.length; i++ ) {
+    if (arr[i] === undefined ) continue
+    if ( !!callback( arr[i], i, arr) ) return true;    
+	}
+	
+  return false
+}
+
+Array.prototype.myFilter = function( callback, arg ) {
+  const returnArray = []
+  const arr = arg || this
+
+  for (let i = 0; i < arr.length; i++ ) {
+    if (arr[i] === undefined ) continue
+    if ( !!callback( arr[i], i, arr) ) returnArray.push(arr[i])     
+  }
+  
+  return returnArray
+}
